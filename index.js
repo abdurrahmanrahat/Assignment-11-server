@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -37,6 +37,7 @@ async function run() {
         const skateboardCollection = client.db('sportToysDB').collection('Skateboard');
         const golfSetCollection = client.db('sportToysDB').collection('GolfSet');
         const plasticToysCollection = client.db('sportToysDB').collection('PlasticToys');
+        const allToysCollection = client.db('sportToysDB').collection('allToysData');
 
 
 
@@ -59,7 +60,18 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/allToys', async (req, res) => {
+            const cursor = allToysCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
 
+        app.get('/allToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await allToysCollection.findOne(query);
+            res.send(result);
+        })
 
 
 
