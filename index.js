@@ -84,6 +84,13 @@ async function run() {
             res.send(result);
         })
 
+        // get data from addToy collection in mongodb
+        app.get('/addToys', async (req, res) => {
+            const cursor = addToyCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
 
 
 
