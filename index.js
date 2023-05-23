@@ -38,6 +38,7 @@ async function run() {
         const golfSetCollection = client.db('sportToysDB').collection('GolfSet');
         const plasticToysCollection = client.db('sportToysDB').collection('PlasticToys');
         const allToysCollection = client.db('sportToysDB').collection('allToysData');
+        const addToyCollection = client.db('sportToysDB').collection('addToyData');
 
 
 
@@ -60,19 +61,28 @@ async function run() {
             res.send(result);
         })
 
-        app.get('/allToys', async (req, res) => {
+        app.get('/toys', async (req, res) => {
             const cursor = allToysCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         })
 
-        app.get('/allToys/:id', async (req, res) => {
+        app.get('/toys/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await allToysCollection.findOne(query);
             res.send(result);
         })
 
+        /*------------------------
+            AddToy collection
+        ------------------------*/
+        // Post data from client side to server mongoDB
+        app.post('/addToys', async (req, res) => {
+            const addToy = req.body;
+            const result = await addToyCollection.insertOne(addToy);
+            res.send(result);
+        })
 
 
 
