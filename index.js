@@ -86,7 +86,7 @@ async function run() {
 
         // get data from addToy collection in mongodb
         app.get('/addToys', async (req, res) => {
-            const cursor = addToyCollection.find();
+            const cursor = addToyCollection.find().limit(20);
             const result = await cursor.toArray();
             res.send(result);
         })
@@ -96,6 +96,16 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await addToyCollection.findOne(query);
+            res.send(result);
+        })
+
+        // get some toys data with email specific
+        app.get('/specificToys', async (req, res) => {
+            let query = {};
+            if (req.query?.email) {
+                query = { email: req.query.email };
+            }
+            const result = await addToyCollection.find(query).toArray();
             res.send(result);
         })
 
