@@ -117,6 +117,29 @@ async function run() {
             res.send(result);
         })
 
+        // update a toy in My Toys page from db
+        app.patch('/specificToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const updatedToy = req.body;
+            const updateDB = {
+                $set: {
+                    toyPrice: updatedToy.toyPrice,
+                    toyQuantity: updatedToy.toyQuantity,
+                    toyDes: updatedToy.toyDes
+                },
+            }
+            const result = await addToyCollection.updateOne(filter, updateDB);
+            res.send(result);
+        })
+
+        // one toy data for updating
+        app.get('/specificToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await addToyCollection.findOne(query);
+            res.send(result);
+        })
 
 
         // Send a ping to confirm a successful connection
