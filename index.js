@@ -91,6 +91,13 @@ async function run() {
             res.send(result);
         })
 
+        // get data with specific id from addToy collection in mongodb
+        app.get('/addToys/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await addToyCollection.findOne(query);
+            res.send(result);
+        })
 
 
 
